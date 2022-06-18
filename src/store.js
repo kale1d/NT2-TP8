@@ -11,14 +11,16 @@ export default new Vuex.Store({
     usuarios: [],
   },
   actions: {
-    async postUser(user) {
+    async postUser({ commit }, user) {
       try {
         await axios.post(APIURL, user, {
           "content-type": "application/json",
         });
+        commit("setStatus", true);
         return true;
       } catch (e) {
         console.log(e.message);
+        commit("setStatus", false);
         return false;
       }
     },
@@ -35,6 +37,9 @@ export default new Vuex.Store({
   mutations: {
     setUsers(state, users) {
       state.usuarios = users;
+    },
+    setStatus(state, status) {
+      state.status = status;
     },
   },
 });
